@@ -80,4 +80,3 @@ Route::get('/password/request', function() {
 Route::get('health', function () {
     return response()->json(['status' => 'ok']);
 });
-
