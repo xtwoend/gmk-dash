@@ -9,8 +9,7 @@ use App\Http\Middleware\DeviceMiddleware;
 
 Route::post('login', [\App\Http\Controllers\Api\AuthController::class, 'login'])->name('api.auth.login');
 
-Route::middleware(['auth:sanctum', DeviceMiddleware::class])->group(function () {
-    // Authentication routes
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('validate', [AuthController::class, 'me'])->name('api.auth.me');
     Route::post('verify', [AuthController::class, 'verify'])->name('api.auth.verify');
     Route::post('logout', [AuthController::class, 'logout'])->name('api.auth.logout');
@@ -20,7 +19,11 @@ Route::middleware(['auth:sanctum', DeviceMiddleware::class])->group(function () 
     // devices active
     Route::get('devices', [DeviceController::class, 'index'])->name('api.devices.index');
     Route::get('devices/{id}', [DeviceController::class, 'show'])->name('api.devices.show');
+});
 
+
+Route::middleware(['auth:sanctum', DeviceMiddleware::class])->group(function () {
+    
     // Shift
     Route::get('shift', [ShiftController::class, 'active'])->name('api.shift.active');
 
