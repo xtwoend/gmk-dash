@@ -27,7 +27,7 @@ class Gandum
             ];
         }
 
-        $response = $this->client->post('/api/Por', [
+        $response = $this->client->get('/api/Por', [
             'id' => $por,
         ]);
 
