@@ -355,7 +355,9 @@
                             <td>{{ $record->product?->product_name }}</td>
                             <td>{{ $record->product?->batch_number }}</td>
                             <td class="text-center">
-                                <span class="badge bg-green">OK</span>
+                                @if($record->status > 0)
+                                <span class="badge bg-danger">NG</span>
+                                @endif
                             </td>
                             <td class="text-center">{!! $record->is_reported ? '&#x2705;' : '' !!}</td>
                             <td class="text-center">{!! $record->is_separated ? '&#x2705;' : '' !!}</td>
