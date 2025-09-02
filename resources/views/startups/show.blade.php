@@ -355,8 +355,10 @@
                             <td>{{ $record->product?->product_name }}</td>
                             <td>{{ $record->product?->batch_number }}</td>
                             <td class="text-center">
-                                @if($record->qa_id > 0)
+                                @if($record->status > 0)
                                 <span class="badge bg-danger">NG</span>
+                                @else
+                                <span class="badge bg-success">OK</span>
                                 @endif
                             </td>
                             <td class="text-center">{!! $record->is_reported ? '&#x2705;' : '' !!}</td>
