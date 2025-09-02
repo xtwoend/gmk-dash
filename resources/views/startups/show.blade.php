@@ -355,7 +355,7 @@
                             <td>{{ $record->product?->product_name }}</td>
                             <td>{{ $record->product?->batch_number }}</td>
                             <td class="text-center">
-                                @if($record->qa > 0)
+                                @if($record->qa_id > 0)
                                 <span class="badge bg-danger">NG</span>
                                 @endif
                             </td>
