@@ -163,4 +163,34 @@ class StartupController extends Controller
             'dateTo'
         ));
     }
+
+    public function ngConfirm(Request $request)
+    {
+        $request->validate([
+            'record_id' => 'required|exists:records,id'
+        ]);
+        
+        $qa = $request->user();
+
+        $record = \App\Models\Record::find($request->record_id);
+        $record->qa_id = $qa->id;
+        $record->save();
+
+        return redirect()->back()->with('success', 'NG record verified successfully.');
+    }
+
+    public function verificationConfirm(Request $request)
+    {
+        $request->validate([
+            'verification_id' => 'required|exists:verifications,id'
+        ]);
+        
+        $foreman = $request->user();
+
+        $verification = \App\Models\Verification::find($request->verification_id);
+        $verification->foreman_id = $foreman->id;
+        $verification->save();
+
+        return redirect()->back()->with('success', 'Verification confirmed successfully.');
+    }
 }

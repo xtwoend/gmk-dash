@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\DeviceProductController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('devices.toggle-status')
         ->middleware('permission:device-edit');
     
+    // Device Products Management
+    Route::resource('device-products', DeviceProductController::class)->middleware('permission:device-list|device-create|device-edit|device-delete');
+    
     // Shifts Management
     Route::resource('shifts', ShiftController::class)->middleware('permission:shift-list|shift-create|shift-edit|shift-delete');
     
@@ -41,7 +45,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/startups/report', [App\Http\Controllers\StartupController::class, 'report'])->name('startups.report')->middleware('permission:startup-list');
     Route::get('/startups/analytics', [App\Http\Controllers\StartupController::class, 'analytics'])->name('startups.analytics')->middleware('permission:startup-list');
     Route::get('/startups/{startup}', [App\Http\Controllers\StartupController::class, 'show'])->name('startups.show')->middleware('permission:startup-list');
-    
+    Route::post('/startups/ng-confirm', [App\Http\Controllers\StartupController::class, 'ngConfirm'])->name('startups.ng-confirm')->middleware('permission:startup-edit');
+    Route::post('/startups/verification-confirm', [App\Http\Controllers\StartupController::class, 'verificationConfirm'])->name('startups.verification-confirm')->middleware('permission:startup-edit');
+
     // User Management
     Route::resource('users', UserController::class)->middleware('permission:user-list|user-create|user-edit|user-delete');
     

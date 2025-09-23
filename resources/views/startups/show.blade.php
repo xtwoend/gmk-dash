@@ -224,7 +224,15 @@
                                 {{ $startup->user->name ?? 'Unknown' }}
                             </td>
                             <td class="text-center">
-                                {{ $verification->foreman?->name ?? '' }}
+                                @if($verification->foreman)
+                                    {{ $verification->foreman?->name ?? '' }}
+                                @else
+                                    <form action="{{ route('startups.verification-confirm') }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="verification_id" value="{{ $verification->id }}">
+                                        <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
+                                    </form>
+                                @endif
                             </td>
                             <td class="text-center">
                                 {{ $verification->wor }} {{ $verification->remarks ?? '' }} 
@@ -366,7 +374,17 @@
                             <td class="text-center">{!! $record->is_quarantined ? '&#x2705;' : '' !!}</td>
 
                             <td class="text-center">{{ $record->startup?->user?->name }}</td>
-                            <td class="text-center">{{ $record->qa?->name }}</td>
+                            <td class="text-center">
+                                @if($record->qa)
+                                    {{ $record->qa?->name }}
+                                @else
+                                    <form action="{{ route('startups.ng-confirm') }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="record_id" value="{{ $record->id }}">
+                                        <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
+                                    </form>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                         <!-- Add more rows as needed -->

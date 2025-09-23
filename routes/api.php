@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\DeviceProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DeviceController;
@@ -19,6 +20,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // devices active
     Route::get('devices', [DeviceController::class, 'index'])->name('api.devices.index');
     Route::get('devices/{id}', [DeviceController::class, 'show'])->name('api.devices.show');
+
 });
 
 
@@ -43,6 +45,8 @@ Route::middleware(['auth:sanctum', DeviceMiddleware::class])->group(function () 
     Route::post('activity/ng-confirm', [ActivityController::class, 'ngConfirm'])->name('api.activity.ng-confirm');
     Route::post('activity/ng-action', [ActivityController::class, 'ngAction'])->name('api.activity.ng-action');
     Route::post('activity/product', [ActivityController::class, 'scanProduct'])->name('api.activity.product');
+    Route::post('activity/set-product', [ActivityController::class, 'setProduct'])->name('api.activity.set-product');
+    Route::post('activity/noise-detected', [ActivityController::class, 'noiseDetected'])->name('api.activity.noise-detected');
 
     Route::put('activity/record/{id}', [ActivityController::class, 'updateActivity'])->name('api.activity.record.update');
     Route::get('activity/record/{id}', [ActivityController::class, 'getActivity'])->name('api.activity.record');

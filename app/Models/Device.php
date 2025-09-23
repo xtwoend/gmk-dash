@@ -40,4 +40,9 @@ class Device extends Model
     {
         return $this->hasMany(Startup::class);
     }
+
+    public function products()
+    {
+        return $this->hasMany(DeviceProduct::class);
+    }
 }

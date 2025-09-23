@@ -10,7 +10,7 @@ class DeviceController extends Controller
 {
     public function index(Request $request)
     {
-        $devices = Device::active()->get();
+        $devices = Device::active()->with('products')->get();
 
         // Logic to retrieve and return a list of devices
         return response()->json($devices);

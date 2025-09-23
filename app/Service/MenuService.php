@@ -29,7 +29,7 @@ class MenuService
                 'permissions' => ['production-view'],
                 'children' => [
                     [
-                        'title' => 'Startups',
+                        'title' => 'Report',
                         'icon' => 'play',
                         'route' => 'startups.index',
                         'permissions' => ['startup-list']
@@ -44,6 +44,12 @@ class MenuService
                         'title' => 'Devices',
                         'icon' => 'device-desktop',
                         'route' => 'devices.index',
+                        'permissions' => ['device-list']
+                    ],
+                    [
+                        'title' => 'Product Message',
+                        'icon' => 'package',
+                        'route' => 'device-products.index',
                         'permissions' => ['device-list']
                     ],
                 ]

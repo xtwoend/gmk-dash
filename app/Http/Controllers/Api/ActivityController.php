@@ -8,6 +8,7 @@ use App\Models\Record;
 use App\Models\Startup;
 use App\Service\Gandum;
 use App\Models\Activity;
+use App\Models\NoiseLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -227,14 +228,14 @@ class ActivityController extends Controller
         }
 
         // Log detected activity
-        $record = $startup->records()->create([
+        $startup->records()->create([
             'product_id' => $startup->currentProduct?->id,
             'record_time' => now(),
             'status' => 1,
             'remarks' => 'Metal Detector detected something'
         ]);
 
-        return response()->json($record);
+        return response()->json($startup->load('device', 'user', 'verifications', 'activities', 'activities.product', 'lastVerification', 'ngRecords', 'ngRecords.product', 'ngRecords.qa'));
     }
 
     public function scanProduct(Request $request)
@@ -257,12 +258,12 @@ class ActivityController extends Controller
             ], 404);
         }
 
-        // Process the product scan
-        $product = $startup->products()->updateOrCreate([
+        return response()->json([
+            'success' => true,
+            'id' => null,
             'startup_id' => $startup->id,
-            'por_id' => $por['prodId'],
-        ], [
             'item_id' => $por['itemId'],
+            'por_id' => $por['prodId'],
             'product_name' => $por['name'],
             'batch_number' => $por['inventBatchId'] ?? null,
             'product_specifications' => $por['specifications'] ?? null,
@@ -272,9 +273,63 @@ class ActivityController extends Controller
             'prod_pool_id' => $por['prodPoolId'] ?? null,
             'schedule_date' => isset($por['schedDate']) ? date('Y-m-d H:i:s', strtotime($por['schedDate'])) : null,
             'scanned_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        return response()->json($product);
+        // Process the product scan
+        // $product = $startup->products()->updateOrCreate([
+        //     'startup_id' => $startup->id,
+        //     'por_id' => $por['prodId'],
+        // ], [
+        //     'item_id' => $por['itemId'],
+        //     'product_name' => $por['name'],
+        //     'batch_number' => $por['inventBatchId'] ?? null,
+        //     'product_specifications' => $por['specifications'] ?? null,
+        //     'product_type' => $por['productType'] ?? 'pcs',
+        //     'target_quantity' => $por['qtySched'] ?? null,
+        //     'unit' => $por['unit'] ?? 'pcs',
+        //     'prod_pool_id' => $por['prodPoolId'] ?? null,
+        //     'schedule_date' => isset($por['schedDate']) ? date('Y-m-d H:i:s', strtotime($por['schedDate'])) : null,
+        //     'scanned_at' => now(),
+        // ]);
+
+        // return response()->json($product);
+    }
+
+    public function setProduct(Request $request)
+    {
+        $deviceId = $request->attributes->get('device_id');
+
+        $startup = Startup::where('device_id', $deviceId)
+            ->where('startup_date', now()->toDateString())
+            ->first();
+
+        if(! $startup) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No active startup found for this device.'
+            ], 404);
+        }
+
+        $product = $startup->products()->updateOrCreate([
+            'startup_id' => $startup->id,
+            'por_id' => $request->input('por_id'),
+        ], [
+            'item_id' => $request->input('item_id'),
+            'product_name' => $request->input('product_name'),
+            'batch_number' => $request->input('batch_number'),
+            'product_specifications' => $request->input('product_specifications'),
+            'product_type' => $request->input('product_type', 'pcs'),
+            'target_quantity' => $request->input('target_quantity'),
+            'unit' => $request->input('unit', 'pcs'),
+            'prod_pool_id' => $request->input('prod_pool_id'),
+            'schedule_date' => $request->input('schedule_date') ? date('Y-m-d H:i:s', strtotime($request->input('schedule_date'))) : null,
+            'scanned_at' => now(),
+            'message' => $request->input('message'),
+        ]);
+
+        return response()->json($startup->load('device', 'user', 'verifications', 'activities', 'activities.product', 'lastVerification', 'ngRecords', 'ngRecords.product', 'ngRecords.qa'));
     }
 
     public function ngConfirm(Request $request)
@@ -462,5 +517,31 @@ class ActivityController extends Controller
         $activity->save();
 
         return response()->json($activity);
+    }
+
+    public function noiseDetected(Request $request)
+    {
+        $deviceId = $request->attributes->get('device_id');
+        $user = $request->user();
+        
+        $startup = Startup::where('device_id', $deviceId)
+            ->where('startup_date', now()->toDateString())
+            ->first();
+
+        if (!$startup) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No active startup found for this device.'
+            ], 404);
+        }
+
+        // Log the noise detection event
+        NoiseLog::create([
+            'device_id' => $deviceId,
+            'startup_id' => $startup->id,
+            'log_time' => now(),
+        ]);
+
+        return response()->json($startup->load('device', 'user', 'verifications', 'activities', 'activities.product', 'lastVerification', 'ngRecords', 'ngRecords.product', 'ngRecords.qa'));
     }
 }

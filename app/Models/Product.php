@@ -18,7 +18,8 @@ class Product extends Model
         'unit',
         'prod_pool_id',
         'schedule_date',
-        'scanned_at'
+        'scanned_at',
+        'message',
     ];
 
     protected $casts = [
