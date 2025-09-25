@@ -7,6 +7,7 @@ use App\Models\Device;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class StartupController extends Controller
 {
@@ -188,6 +189,21 @@ class StartupController extends Controller
         $foreman = $request->user();
 
         $verification = \App\Models\Verification::find($request->verification_id);
+        $verification->foreman_id = $foreman->id;
+        $verification->save();
+
+        return redirect()->back()->with('success', 'Verification confirmed successfully.');
+    }
+
+    public function activityConfirm(Request $request)
+    {
+        $request->validate([
+            'activity_id' => 'required|exists:activities,id'
+        ]);
+        
+        $foreman = $request->user();
+
+        $verification = \App\Models\Activity::find($request->activity_id);
         $verification->foreman_id = $foreman->id;
         $verification->save();
 

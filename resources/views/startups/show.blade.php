@@ -317,7 +317,17 @@
                             <!-- Created by -->
                             <td class="text-center">{{ $activity->user?->name }}</td>
                             <!-- Validated by -->
-                            <td class="text-center">{{ $activity->foreman?->name }}</td>
+                            <td class="text-center">
+                                @if($record->foreman)
+                                    {{ $record->foreman?->name }}
+                                @else
+                                    <form action="{{ route('startups.activity-confirm') }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="activity_id" value="{{ $activity->id }}">
+                                        <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
+                                    </form>
+                                @endif
+                            </td>
                             <!-- Action -->
                             <td class="text-center">-</td>
                         </tr>
