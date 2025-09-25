@@ -272,7 +272,7 @@ class ActivityController extends Controller
             'target_quantity' => $por['qtySched'] ?? null,
             'unit' => $por['unit'] ?? 'pcs',
             'prod_pool_id' => $por['prodPoolId'] ?? null,
-            'schedule_date' => isset($por['schedDate']) ? date('Y-m-d H:i:s', strtotime($por['schedDate'])) : null,
+            'schedule_date' => isset($por['schedDate']) ? date('Y-m-d', strtotime($por['schedDate'])) : null,
             'expired_date' => Carbon::parse($por['expDate'])->format('Y-m-d') ?? null,
             'scanned_at' => now(),
             'created_at' => now(),
