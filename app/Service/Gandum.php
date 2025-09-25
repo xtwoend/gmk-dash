@@ -23,7 +23,8 @@ class Gandum
                 'schedDate' => '2024-08-22T08:00:00',
                 'qtySched' => 1000.00,
                 'prodPoolId' => 'G',
-                'inventBatchId' => '72318916'
+                'inventBatchId' => '72318916',
+                'expDate' => ''
             ];
         }
 

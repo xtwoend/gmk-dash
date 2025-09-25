@@ -272,6 +272,7 @@ class ActivityController extends Controller
             'unit' => $por['unit'] ?? 'pcs',
             'prod_pool_id' => $por['prodPoolId'] ?? null,
             'schedule_date' => isset($por['schedDate']) ? date('Y-m-d H:i:s', strtotime($por['schedDate'])) : null,
+            'expired_date' => $por['expDate'],
             'scanned_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),

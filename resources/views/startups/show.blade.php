@@ -296,7 +296,7 @@
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td class="text-center">{{ $activity->shift }}</td>
                             <td class="text-center">{{ $activity->activity_date->format('H:i') }}</td>
-                            <td>{{ $activity->product?->product_name }}</td>
+                            <td>{{ $activity->product?->product_name }} / {{ $activity->product?->message }}</td>
                             <td>{{ $activity->product?->batch_number }}</td>
                             <td>{{ $activity->product?->unit }}</td>
                             <!-- Fe columns -->
