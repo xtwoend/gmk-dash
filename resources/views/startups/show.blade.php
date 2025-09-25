@@ -318,8 +318,8 @@
                             <td class="text-center">{{ $activity->user?->name }}</td>
                             <!-- Validated by -->
                             <td class="text-center">
-                                @if($record->foreman)
-                                    {{ $record->foreman?->name }}
+                                @if($activity->foreman)
+                                    {{ $activity->foreman?->name }}
                                 @else
                                     <form action="{{ route('startups.activity-confirm') }}" method="POST" style="display: inline;">
                                         @csrf
