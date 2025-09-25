@@ -18,6 +18,7 @@ class Product extends Model
         'unit',
         'prod_pool_id',
         'schedule_date',
+        'expired_date',
         'scanned_at',
         'message',
     ];

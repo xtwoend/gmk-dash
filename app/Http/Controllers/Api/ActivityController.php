@@ -326,6 +326,7 @@ class ActivityController extends Controller
             'unit' => $request->input('unit', 'pcs'),
             'prod_pool_id' => $request->input('prod_pool_id'),
             'schedule_date' => $request->input('schedule_date') ? date('Y-m-d H:i:s', strtotime($request->input('schedule_date'))) : null,
+            'expired_date' => $request->input('expired_date', null),
             'scanned_at' => now(),
             'message' => $request->input('message'),
         ]);
