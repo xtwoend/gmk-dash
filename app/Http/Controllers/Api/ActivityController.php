@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Shift;
 use App\Models\Device;
 use App\Models\Record;
@@ -313,6 +314,8 @@ class ActivityController extends Controller
             ], 404);
         }
 
+        $expired_date = $request->input('expired_date', null);
+
         $product = $startup->products()->updateOrCreate([
             'startup_id' => $startup->id,
             'por_id' => $request->input('por_id'),
@@ -326,7 +329,7 @@ class ActivityController extends Controller
             'unit' => $request->input('unit', 'pcs'),
             'prod_pool_id' => $request->input('prod_pool_id'),
             'schedule_date' => $request->input('schedule_date') ? date('Y-m-d H:i:s', strtotime($request->input('schedule_date'))) : null,
-            'expired_date' => $request->input('expired_date', null),
+            'expired_date' => ($expired_date) ? Carbon::parse($expired_date)->format('Y-m-d') : null,
             'scanned_at' => now(),
             'message' => $request->input('message'),
         ]);
