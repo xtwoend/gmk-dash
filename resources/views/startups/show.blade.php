@@ -329,7 +329,9 @@
                                 @endif
                             </td>
                             <!-- Action -->
-                            <td class="text-center">-</td>
+                            <td class="text-center">
+                                {{ $activity->product?->message }}
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
