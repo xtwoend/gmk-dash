@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/startups/{startup}', [App\Http\Controllers\StartupController::class, 'show'])->name('startups.show')->middleware('permission:startup-list');
     Route::post('/startups/ng-confirm', [App\Http\Controllers\StartupController::class, 'ngConfirm'])->name('startups.ng-confirm')->middleware('permission:startup-edit');
     Route::post('/startups/verification-confirm', [App\Http\Controllers\StartupController::class, 'verificationConfirm'])->name('startups.verification-confirm')->middleware('permission:startup-edit');
+    Route::post('/startups/activity-confirm', [App\Http\Controllers\StartupController::class, 'activityConfirm'])->name('startups.activity-confirm')->middleware('permission:startup-edit');
 
     // User Management
     Route::resource('users', UserController::class)->middleware('permission:user-list|user-create|user-edit|user-delete');
