@@ -35,7 +35,8 @@ Route::middleware(['auth:sanctum', DeviceMiddleware::class])->group(function () 
     Route::post('activity/startup', [ActivityController::class, 'startup'])->name('api.activity.startup');
     Route::post('activity/pause', [ActivityController::class, 'pause'])->name('api.activity.pause');
     Route::post('activity/finish', [ActivityController::class, 'finish'])->name('api.activity.finish');
-
+    Route::post('activity/product-qty', [ActivityController::class, 'productQty'])->name('api.activity.product-qty');
+    
     Route::post('activity/verification', [ActivityController::class, 'verification'])->name('api.activity.verification');
     Route::put('activity/verification', [ActivityController::class, 'verificationUpdate'])->name('api.activity.verification.update');
     Route::post('activity/verification-activity', [ActivityController::class, 'verificationActivity'])->name('api.activity.verification-activity');

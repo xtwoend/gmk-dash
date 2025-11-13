@@ -13,7 +13,7 @@
                     </a>
                 </div>
                 <h2 class="page-title">
-                    Startup Details
+                    Report Details
                 </h2>
             </div>
         </div>
@@ -27,7 +27,10 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Basic Information</h3>
+                <h3 class="card-title">REKAP HASIL VERIFIKASI METAL DETECTION</h3>
+                <div class="card-actions">
+                    <h3>FRM-C3-5C.010 <span class="text-muted" style="font-size: 12px;">Rev 4</span></h3>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -91,21 +94,22 @@
                             </div>
                         </div>
                     </div>
-                    @if($startup->status == 2 && $startup->pause_reason)
+                    
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Pause Reason</label>
                             <div class="form-control-plaintext">
-                                {{ $startup->pause_reason }}
-                                @if($startup->pause_time)
-                                    <div class="text-muted small">
-                                        Paused at: {{ Carbon\Carbon::parse($startup->pause_time)->format('M d, Y H:i') }}
-                                    </div>
+                                @if($startup->status == 2 && $startup->pause_reason)
+                                    {{ $startup->pause_reason }}
+                                    @if($startup->pause_time)
+                                        <div class="text-muted small">
+                                            Paused at: {{ Carbon\Carbon::parse($startup->pause_time)->format('M d, Y H:i') }}
+                                        </div>
+                                    @endif
                                 @endif
                             </div>
                         </div>
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -123,12 +127,12 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="text-muted">OK Records</span>
-                                <span class="text-green h3 mb-0">{{ number_format($startup->ok_count) }}</span>
+                                <span class="text-green h3 mb-0">{{ $okTotal = $startup->products->sum('ok_quantity') }}</span>
                             </div>
                             <div class="progress progress-sm">
                                 @php
-                                    $total = $startup->ok_count + $startup->ng_count;
-                                    $okPercent = $total > 0 ? ($startup->ok_count / $total) * 100 : 0;
+                                    $total = $startup->products->sum('target_quantity');
+                                    $okPercent = $total > 0 ? ($okTotal / $total) * 100 : 0;
                                 @endphp
                                 <div class="progress-bar bg-green" style="width: {{ $okPercent }}%" aria-valuenow="{{ $okPercent }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
@@ -138,7 +142,7 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="text-muted">NG Records</span>
-                                <span class="text-red h3 mb-0">{{ number_format($startup->ng_count) }}</span>
+                                <span class="text-red h3 mb-0">{{ $ngTotal = $startup->products->sum('ng_quantity') }}</span>
                             </div>
                             <div class="progress progress-sm">
                                 @php
@@ -151,7 +155,7 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">Total Records</span>
+                                <span class="text-muted">Total Target</span>
                                 <span class="h3 mb-0">{{ number_format($total) }}</span>
                             </div>
                         </div>
@@ -237,6 +241,46 @@
                             <td class="text-center">
                                 {{ $verification->wor }} {{ $verification->remarks ?? '' }} 
                             </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+@if($startup->products)
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Product Terproses</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Nama Produk</th>
+                            <th class="text-center">BN</th>
+                            <th class="text-center">Satuan Kemasan</th>
+                            <th class="text-center">Jumlah Target Product</th>
+                            <th class="text-center">Jumlah Produk OK</th>
+                            <th class="text-center">Jumlah Produk NOT OK</th>
+                            <th class="text-center">Waktu Record</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($startup->products as $product)
+                        <tr>
+                            <td>{{ $product->product_name }}</td>
+                            <td>{{ $product->batch_number }}</td>
+                            <td class="text-center">{{ $product->unit }}</td>
+                            <td class="text-center">{{ $product->target_quantity }}</td>
+                            <td class="text-center">{{ $product->ok_quantity }}</td>
+                            <td class="text-center">{{ $product->ng_quantity }}</td>
+                            <td class="text-center">{{ $product->created_at }}</td>
                         </tr>
                         @endforeach
                     </tbody>

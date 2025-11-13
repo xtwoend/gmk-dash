@@ -11,7 +11,7 @@
                     Management
                 </div>
                 <h2 class="page-title">
-                    All Startups
+                    Production Reports
                 </h2>
             </div>
             <div class="col-auto ms-auto d-print-none">
@@ -155,7 +155,7 @@
                             <td>
                                 @switch($startup->status)
                                     @case(1)
-                                        Active<
+                                        Active
                                         @break
                                     @case(2)
                                         Paused

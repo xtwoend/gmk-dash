@@ -16,9 +16,12 @@ class Product extends Model
         'product_type',
         'target_quantity',
         'unit',
+        'ng_quantity',
+        'ok_quantity',
         'prod_pool_id',
         'schedule_date',
         'expired_date',
+        'estimated_date',
         'scanned_at',
         'message',
     ];

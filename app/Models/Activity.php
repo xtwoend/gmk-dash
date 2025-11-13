@@ -32,7 +32,7 @@ class Activity extends Model
         'activity_date' => 'datetime:Y-m-d H:i:s',
     ];  
 
-    protected $appends = ['shift'];
+    protected $appends = ['shift', 'last_hour'];
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -52,5 +52,9 @@ class Activity extends Model
 
     public function getShiftAttribute() {
         return Shift::getShiftByDatetime($this->attributes['activity_date'])?->name ?? 'N/A';
+    }
+
+    public function getLastHourAttribute() {
+        return date('Y-m-d H:00:00', strtotime($this->attributes['activity_date']));
     }
 }

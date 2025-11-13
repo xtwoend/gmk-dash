@@ -127,6 +127,37 @@ class ActivityController extends Controller
         return response()->json($startup->load('device', 'user', 'verifications', 'activities', 'activities.product', 'lastVerification', 'ngRecords', 'ngRecords.product', 'ngRecords.qa')); 
     }
 
+    public function productQty(Request $request)
+    {
+        $deviceId = $request->attributes->get('device_id');
+
+        $startup = Startup::where('device_id', $deviceId)
+            ->where('startup_date', now()->toDateString())
+            ->first();
+
+        if(! $startup) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No active startup found for this device.'
+            ], 404);
+        }
+
+        $product = $startup->currentProduct;
+
+        if(! $product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No product found for this startup.'
+            ], 404);
+        }
+
+        $product->ng_quantity = $request->input('ng_quantity', $product->ng_quantity);
+        $product->ok_quantity = $request->input('ok_quantity', $product->ok_quantity);
+        $product->save();
+
+        return response()->json($startup->load('device', 'user', 'verifications', 'activities', 'activities.product', 'lastVerification', 'ngRecords', 'ngRecords.product', 'ngRecords.qa'));
+    }
+
     /**
      * verification
      */
@@ -326,6 +357,9 @@ class ActivityController extends Controller
             'product_specifications' => $request->input('product_specifications'),
             'product_type' => $request->input('product_type', 'pcs'),
             'target_quantity' => $request->input('target_quantity'),
+            'ng_quantity' => $request->input('ng_quantity', 0),
+            'ok_quantity' => $request->input('ok_quantity', 0),
+            'estimated_date' => $request->input('estimated_date') ? date('Y-m-d H:i:s', strtotime($request->input('estimated_date'))) : null,
             'unit' => $request->input('unit', 'pcs'),
             'prod_pool_id' => $request->input('prod_pool_id'),
             'schedule_date' => $request->input('schedule_date') ? date('Y-m-d H:i:s', strtotime($request->input('schedule_date'))) : null,

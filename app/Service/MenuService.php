@@ -23,7 +23,7 @@ class MenuService
                 'children' => []
             ],
             [
-                'title' => 'Production',
+                'title' => 'Production Reports',
                 'icon' => 'settings',
                 'route' => null,
                 'permissions' => ['production-view'],
@@ -34,6 +34,14 @@ class MenuService
                         'route' => 'startups.index',
                         'permissions' => ['startup-list']
                     ],
+                ]
+            ],
+            [
+                'title' => 'Settings',
+                'icon' => 'settings',
+                'route' => null,
+                'permissions' => ['production-view'],
+                'children' => [
                     [
                         'title' => 'Shifts',
                         'icon' => 'clock',
