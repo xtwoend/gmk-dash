@@ -225,7 +225,7 @@
                                 {!! $verification->ss == 1 ? '&#x2705;' : 'X' !!}
                             </td>
                             <td class="text-center">
-                                {{ $startup->user->name ?? 'Unknown' }}
+                                {{ $verification->user->name ?? 'Unknown' }}
                             </td>
                             <td class="text-center">
                                 @if($verification->foreman)

@@ -42,10 +42,24 @@ class ActivityController extends Controller
     {
         $deviceId = $request->attributes->get('device_id');
 
+        $userId = $request->user()->id;
+
+        // update operator if changed
+        $startup = Startup::where('device_id', $deviceId)
+            ->where('startup_date', now()->toDateString())
+            ->first();
+            
+        if( $startup && $startup->user_id != $userId) {
+            $startup->user_id = $userId;
+            $startup->save();
+        }
+
+
         $startup = Startup::with('device', 'user', 'verifications', 'verifications.user', 'verifications.foreman', 'activities', 'activities.product', 'lastVerification', 'ngRecords', 'ngRecords.product', 'ngRecords.qa')
             ->where('device_id', $deviceId)
             ->where('startup_date', now()->toDateString())
             ->first();
+            
 
         if(! $startup) {
             return response()->json([
