@@ -306,6 +306,7 @@
                             <th rowspan="3" class="text-center align-middle" style="min-width: 80px;">Shift</th>
                             <th rowspan="3" class="text-center align-middle" style="min-width: 100px;">Jam</th>
                             <th rowspan="3" class="text-center align-middle" style="min-width: 150px;">Nama Produk</th>
+                            <th rowspan="3" class="text-center align-middle" style="min-width: 150px;">Produk Massage</th>
                             <th rowspan="3" class="text-center align-middle" style="min-width: 100px;">BN</th>
                             <th rowspan="3" class="text-center align-middle" style="min-width: 120px;">Satuan Kemasan</th>
                             <th colspan="9" class="text-center" style="background-color: #f8f9fa;">Kondisi Sensitif Produk</th>
@@ -340,7 +341,8 @@
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td class="text-center">{{ $activity->shift }}</td>
                             <td class="text-center">{{ $activity->activity_date->format('H:i') }}</td>
-                            <td>{{ $activity->product?->product_name }} / {{ $activity->product?->message }}</td>
+                            <td>{{ $activity->product?->product_name }}</td>
+                            <td>{{ $activity->product?->message }}</td>
                             <td>{{ $activity->product?->batch_number }}</td>
                             <td>{{ $activity->product?->unit }}</td>
                             <!-- Fe columns -->
