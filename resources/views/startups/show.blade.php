@@ -376,7 +376,7 @@
                             </td>
                             <!-- Action -->
                             <td class="text-center">
-                                {{ $activity->product?->message }}
+                                {{-- {{ $activity->product?->message }} --}}
                             </td>
                         </tr>
                         @endforeach
