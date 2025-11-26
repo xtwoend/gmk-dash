@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'All Startups')
+@section('title', 'Report MD')
 
 @section('header')
 <div class="page-header d-print-none">

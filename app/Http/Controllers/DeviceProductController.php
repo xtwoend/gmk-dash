@@ -15,10 +15,17 @@ class DeviceProductController extends Controller
      */
     public function index(): View
     {
-        $deviceId = request('device_id', null);
-        $deviceProducts = DeviceProduct::with('device')
-            ->when($deviceId, fn($query) => $query->where('device_id', $deviceId))
-            ->paginate(15);
+        $perPage = request()->get('per_page', 10);
+        $keyword = request()->get('keyword', '');
+        
+        if(isset($keyword) && $keyword != '') {
+            $deviceProducts = DeviceProduct::where('product_code', 'LIKE', "%$keyword%")
+                ->with('device')
+                ->paginate($perPage)
+                ->appends(['keyword' => $keyword, 'per_page' => $perPage]);
+        } else {
+            $deviceProducts = DeviceProduct::with('device')->paginate($perPage);
+        }
             
         return view('device-products.index', compact('deviceProducts'));
     }

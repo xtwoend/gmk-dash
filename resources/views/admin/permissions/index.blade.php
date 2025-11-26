@@ -54,7 +54,7 @@
                         <div class="ms-auto text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input type="text" name="keyword" class="form-control form-control-sm" placeholder="Search users..." value="{{ request('keyword') }}" onkeyup="if(event.keyCode==13) this.form.submit()">
+                                <input type="text" name="keyword" class="form-control form-control-sm" placeholder="Search permissions..." value="{{ request('keyword') }}" onkeyup="if(event.keyCode==13) this.form.submit()">
                             </div>
                         </div>
                     </div>
