@@ -231,7 +231,7 @@
                                 @if($verification->foreman)
                                     {{ $verification->foreman?->name ?? '' }}
                                 @else
-                                    <form action="{{ route('startups.verification-confirm') }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('startups.verification-confirm') }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin memvalidasi verifikasi ini?');">
                                         @csrf
                                         <input type="hidden" name="verification_id" value="{{ $verification->id }}">
                                         <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
@@ -367,7 +367,7 @@
                                 @if($activity->foreman)
                                     {{ $activity->foreman?->name }}
                                 @else
-                                    <form action="{{ route('startups.activity-confirm') }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('startups.activity-confirm') }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin memvalidasi aktivitas ini?');">
                                         @csrf
                                         <input type="hidden" name="activity_id" value="{{ $activity->id }}">
                                         <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
@@ -436,7 +436,7 @@
                                 @if($record->qa)
                                     {{ $record->qa?->name }}
                                 @else
-                                    <form action="{{ route('startups.ng-confirm') }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('startups.ng-confirm') }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin memvalidasi record NG ini?');">
                                         @csrf
                                         <input type="hidden" name="record_id" value="{{ $record->id }}">
                                         <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
