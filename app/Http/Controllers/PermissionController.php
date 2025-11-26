@@ -19,10 +19,19 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::paginate(20);
+        $perPage = request()->get('per_page', 10);
+        $keyword = request()->get('keyword', '');
+        
+        if(isset($keyword) && $keyword != '') {
+            $permissions = Permission::where('name', 'LIKE', "%$keyword%")
+                        ->paginate($perPage)
+                        ->appends(['keyword' => $keyword, 'per_page' => $perPage]);
+        } else {
+            $permissions = Permission::paginate($perPage);
+        }
         return view('admin.permissions.index', compact('permissions'));
     }
-
+    
     /**
      * Show the form for creating a new permission.
      */

@@ -24,7 +24,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->paginate(10);
+        $perPage = request()->get('per_page', 10);
+        $keyword = request()->get('keyword', '');
+        
+        if(isset($keyword) && $keyword != '') {
+            $users = User::where('name', 'LIKE', "%$keyword%")
+                        ->orWhere('username', 'LIKE', "%$keyword%")
+                        ->with('roles')
+                        ->paginate($perPage)
+                        ->appends(['keyword' => $keyword, 'per_page' => $perPage]);
+        } else {
+            $users = User::with('roles')->paginate($perPage);
+        }
+
         return view('admin.users.index', compact('users'));
     }
 

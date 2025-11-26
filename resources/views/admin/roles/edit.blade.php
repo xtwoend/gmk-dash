@@ -45,9 +45,9 @@
                         
                         <div class="mb-3">
                             <label class="form-label">Permissions</label>
-                            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                            <div class="">
                                 @foreach($permissions as $group => $groupPermissions)
-                                    <div class="form-selectgroup-item mb-3">
+                                    <div class="mb-3">
                                         <div class="border rounded p-3">
                                             <h4 class="mb-2 text-capitalize">{{ $group }}</h4>
                                             <div class="row">

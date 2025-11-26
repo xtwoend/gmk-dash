@@ -37,6 +37,29 @@
     <div class="row row-deck row-cards">
         <div class="col-12">
             <div class="card">
+                <form method="GET" action="{{ route('roles.index') }}">
+                <div class="card-body border-bottom py-3">
+                    <div class="d-flex">
+                        <div class="text-muted">
+                            Show
+                            <div class="mx-2 d-inline-block">
+                                <select class="form-select form-select-sm" name="per_page" onchange="this.form.submit()">
+                                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                </select>
+                            </div>
+                            entries
+                        </div>
+                        <div class="ms-auto text-muted">
+                            Search:
+                            <div class="ms-2 d-inline-block">
+                                <input type="text" name="keyword" class="form-control form-control-sm" placeholder="Search users..." value="{{ request('keyword') }}" onkeyup="if(event.keyCode==13) this.form.submit()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
                 <div class="table-responsive">
                     <table class="table card-table table-vcenter text-nowrap">
                         <thead>

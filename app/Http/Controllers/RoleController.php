@@ -20,7 +20,17 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::with('permissions')->paginate(10);
+        $perPage = request()->get('per_page', 10);
+        $keyword = request()->get('keyword', '');
+        
+        if(isset($keyword) && $keyword != '') {
+            $roles = Role::where('name', 'LIKE', "%$keyword%")
+                        ->with('permissions')
+                        ->paginate($perPage)
+                        ->appends(['keyword' => $keyword, 'per_page' => $perPage]);
+        } else {
+            $roles = Role::with('permissions')->paginate($perPage);
+        }
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -76,7 +86,7 @@ class RoleController extends Controller
         $permissions = Permission::all()->groupBy(function($permission) {
             return explode('-', $permission->name)[0];
         });
-        $rolePermissions = $role->permissions->pluck('id')->toArray();
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
         return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 

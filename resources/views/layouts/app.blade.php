@@ -61,7 +61,7 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="#" class="dropdown-item">Status</a>
+                            {{-- <a href="#" class="dropdown-item">Status</a> --}}
                             <a href="{{ route('dashboard.profile') }}" class="dropdown-item">Profile</a>
                             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                 @csrf
