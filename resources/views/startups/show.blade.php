@@ -402,6 +402,7 @@
                             <th colspan="3" class="text-center" style="background-color: #f8f9fa;">Tindakan</th>
                             <th rowspan="2" class="text-center align-middle" style="min-width: 120px;">Operator</th>
                             <th rowspan="2" class="text-center align-middle" style="min-width: 120px;">QA</th>
+                            <th rowspan="2"class="text-center align-middle">Catatan</th>
                         </tr>
                         <tr>
                             <th class="text-center" style="background-color: #f8f9fa; min-width: 100px;">Telah di Laporkan</th>
@@ -437,6 +438,7 @@
                                     </button>
                                 @endif
                             </td>
+                            <td>{{ $record->remarks }}</td>
                         </tr>
                         @endforeach
                         <!-- Add more rows as needed -->
