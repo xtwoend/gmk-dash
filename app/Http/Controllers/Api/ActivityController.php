@@ -390,6 +390,7 @@ class ActivityController extends Controller
         $deviceId = $request->attributes->get('device_id');
         $id = $request->input('id');
         $qa_id = $request->input('qa_id');
+        $remarks = $request->input('remarks');
 
         $startup = Startup::where('device_id', $deviceId)
             ->where('startup_date', now()->toDateString())
@@ -405,6 +406,7 @@ class ActivityController extends Controller
         $record = Record::find($id);
         $record->qa_id = $qa_id;
         $record->qa_confirmed_at = now();
+        $record->remarks = $remarks;
         $record->save();
         
 

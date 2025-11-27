@@ -175,6 +175,8 @@ class StartupController extends Controller
 
         $record = \App\Models\Record::find($request->record_id);
         $record->qa_id = $qa->id;
+        $record->qa_confirmed_at = now();
+        $record->remarks = $request->input('remarks', $record->remarks);
         $record->save();
 
         return redirect()->back()->with('success', 'NG record verified successfully.');
@@ -190,6 +192,8 @@ class StartupController extends Controller
 
         $verification = \App\Models\Verification::find($request->verification_id);
         $verification->foreman_id = $foreman->id;
+        // $verification->confirmed_at = now();
+        $verification->remarks = $request->input('remarks', $verification->remarks);
         $verification->save();
 
         return redirect()->back()->with('success', 'Verification confirmed successfully.');
@@ -205,6 +209,7 @@ class StartupController extends Controller
 
         $verification = \App\Models\Activity::find($request->activity_id);
         $verification->foreman_id = $foreman->id;
+        $verification->remarks = $request->input('remarks', $verification->remarks);
         $verification->save();
 
         return redirect()->back()->with('success', 'Verification confirmed successfully.');

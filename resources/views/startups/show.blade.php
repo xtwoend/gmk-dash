@@ -231,11 +231,9 @@
                                 @if($verification->foreman)
                                     {{ $verification->foreman?->name ?? '' }}
                                 @else
-                                    <form action="{{ route('startups.verification-confirm') }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin memvalidasi verifikasi ini?');">
-                                        @csrf
-                                        <input type="hidden" name="verification_id" value="{{ $verification->id }}">
-                                        <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#verificationModal{{ $verification->id }}">
+                                        Validasi
+                                    </button>
                                 @endif
                             </td>
                             <td class="text-center">
@@ -367,11 +365,9 @@
                                 @if($activity->foreman)
                                     {{ $activity->foreman?->name }}
                                 @else
-                                    <form action="{{ route('startups.activity-confirm') }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin memvalidasi aktivitas ini?');">
-                                        @csrf
-                                        <input type="hidden" name="activity_id" value="{{ $activity->id }}">
-                                        <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#activityModal{{ $activity->id }}">
+                                        Validasi
+                                    </button>
                                 @endif
                             </td>
                             <!-- Action -->
@@ -436,11 +432,9 @@
                                 @if($record->qa)
                                     {{ $record->qa?->name }}
                                 @else
-                                    <form action="{{ route('startups.ng-confirm') }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin memvalidasi record NG ini?');">
-                                        @csrf
-                                        <input type="hidden" name="record_id" value="{{ $record->id }}">
-                                        <button type="submit" class="btn btn-sm btn-primary">Validasi</button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#recordModal{{ $record->id }}">
+                                        Validasi
+                                    </button>
                                 @endif
                             </td>
                         </tr>
@@ -452,4 +446,118 @@
         </div>
     </div>
 </div>
+
+<!-- Modals for Verification -->
+@foreach($startup->verifications as $verification)
+@if(!$verification->foreman)
+<div class="modal fade" id="verificationModal{{ $verification->id }}" tabindex="-1" aria-labelledby="verificationModalLabel{{ $verification->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('startups.verification-confirm') }}" method="POST">
+                @csrf
+                <input type="hidden" name="verification_id" value="{{ $verification->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verificationModalLabel{{ $verification->id }}">Validasi Verifikasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Jam: {{ $verification->created_at->format('H:i') }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan: {{ $verification->type }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="note{{ $verification->id }}" class="form-label">Catatan</label>
+                        <textarea class="form-control" id="note{{ $verification->id }}" name="remarks" rows="3" placeholder="Masukkan catatan (opsional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Validasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+@endforeach
+
+<!-- Modals for Activity -->
+@foreach($startup->activities()->orderBy('created_at')->get() as $activity)
+@if(!$activity->foreman)
+<div class="modal fade" id="activityModal{{ $activity->id }}" tabindex="-1" aria-labelledby="activityModalLabel{{ $activity->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('startups.activity-confirm') }}" method="POST">
+                @csrf
+                <input type="hidden" name="activity_id" value="{{ $activity->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activityModalLabel{{ $activity->id }}">Validasi Aktivitas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Shift: {{ $activity->shift }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jam: {{ $activity->activity_date->format('H:i') }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Produk: {{ $activity->product?->product_name }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activityNote{{ $activity->id }}" class="form-label">Catatan</label>
+                        <textarea class="form-control" id="activityNote{{ $activity->id }}" name="remarks" rows="3" placeholder="Masukkan catatan (opsional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Validasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+@endforeach
+
+<!-- Modals for Records -->
+@foreach($startup->records as $record)
+@if(!$record->qa)
+<div class="modal fade" id="recordModal{{ $record->id }}" tabindex="-1" aria-labelledby="recordModalLabel{{ $record->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('startups.ng-confirm') }}" method="POST">
+                @csrf
+                <input type="hidden" name="record_id" value="{{ $record->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="recordModalLabel{{ $record->id }}">Validasi Record NG</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Waktu: {{ $record->record_time->format('Y-m-d H:i:s') }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Produk: {{ $record->product?->product_name }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">BN: {{ $record->product?->batch_number }}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recordNote{{ $record->id }}" class="form-label">Catatan</label>
+                        <textarea class="form-control" id="recordNote{{ $record->id }}" name="remarks" rows="3" placeholder="Masukkan catatan (opsional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Validasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+@endforeach
 @endsection
